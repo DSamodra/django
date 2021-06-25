@@ -1,0 +1,9 @@
+<center>
+    <h1>Perpustakaan</h1>
+    <!-- call user this is active -->
+
+    {% if user.is_authenticated %}
+        <p>Selamat Datang <strong>{{ user }}</strong> <a href="{% url 'keluar' %}" class="btn btn-warning">Keluar</a> </p>
+    {% endif %}
+
+</center>

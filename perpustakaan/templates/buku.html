@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- call passing variable -->
+{{ title }}
+<!-- fillter -->
+{{ penulis | upper}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Data Buku
+                <a class="btn btn-primary" href="{% url 'tambah_buku' %}">Tambah</a>
+                <a class="btn btn-success" href="{% url 'export_xls' %}">Export .xls</a>
+            </h3>
+
+            <!-- alert notification -->
+            {% for message in messages %}
+                {% if message %}
+                <div class="alert alert-success"> {{ message }} </div>
+                {% endif %}
+            {% endfor %}
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Cover</th>
+                        <th>Judul</th>
+                        <th>Penulis</th>
+                        <th>Penerbit</th>
+                        <th>Jumlah</th>
+                        <th>Kelompok</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- table for display book -->
+                    {% for buku in books %}
+                    <tr>
+                        <td>
+                            <!-- to show image file -->
+                            {% if buku.cover %}
+                                <img src="{{ buku.cover.url }}" alt="" width="90px">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <!-- link with a to another pake using name and passing variable -->
+                            <a href="{% url 'ubah_buku' buku.id %}" style="text-decoration:none">{{ buku.judul }}</a>
+                        </td>
+                        <td>{{ buku.penulis }}</td>
+                        <td>{{ buku.penerbit }}</td>
+                        <td>{{ buku.jumlah }}</td>
+                        <td>{{ buku.kelompok_id }}</td>
+                        <td>
+                            <!-- button with direct modal -->
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-{{ buku.id }}">
+                                Hapus
+                            </button>
+                        </td>
+
+                        <!-- Modal for alert delete -->
+                        <div class="modal fade" id="hapus-{{ buku.id }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Hapus</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Apakah anda yakin menghapus <strong>{{ buku.judul | upper }}</strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                                            Tidak
+                                        </button>
+                                        <a type="button" class="btn btn-danger" href="{% url 'hapus_buku' buku.id %}">
+                                            Hapus buku
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

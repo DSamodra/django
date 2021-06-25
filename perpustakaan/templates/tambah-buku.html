@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class ="col-md-4">
+
+            <!-- this if for notification -->
+            {% if pesan %}
+                <div class="alert alert-success">{{ pesan }}</div>
+            {% endif %}
+
+            <!-- form with files -->
+            <form action="/tambah-buku/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button class = "btn btn-primary">Tambah Buku</button>
+                <a href="/buku" class="btn btn-danger">Kembali</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
